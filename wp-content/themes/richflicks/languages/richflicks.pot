@@ -1,0 +1,261 @@
+msgid ""
+msgstr ""
+"Content-Type: text/plain; charset=utf-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#. Text in function
+#: richflicks/comments.php:34
+msgid "&larr; Older Comments"
+msgstr ""
+
+#. Text in echo
+#: richflicks/index.php:94
+msgid "404 - Sorry, nothing was found!"
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "<span class=\"screen-reader-text\">Posted on</span> %s"
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Above Related Posts Widget Area"
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Add widgets here to appear above the Related Posts Section"
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Add widgets here to appear in the footer widget area."
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Add widgets here to appear in the sidebar of the shop archives."
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Add widgets here to appear next to your featured posts."
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Add widgets here to appear on bottom of your page."
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Add widgets here to appear on top of your page."
+msgstr ""
+
+#. Text in echo
+#: richflicks/woocommerce/cart/cart.php:138
+msgid "Apply Coupon"
+msgstr ""
+
+#. Text in function
+#: richflicks/woocommerce/cart/cart.php:121
+msgid "Available on backorder"
+msgstr ""
+
+#. Text in echo
+#: richflicks/single-related.php:117
+msgid "Back to Home Page"
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Bottom Widget Area"
+msgstr ""
+
+#. Text in function
+#: richflicks/inc/richwp-options.php:1
+msgid "Button Font Color"
+msgstr ""
+
+#. Text in function
+#: richflicks/inc/richwp-options.php:1
+msgid "Colors"
+msgstr ""
+
+#. Text in echo
+#: richflicks/comments.php:53
+msgid "Comments are closed."
+msgstr ""
+
+#. Text in function
+#: richflicks/inc/richwp-options.php:1
+msgid "Copyright Notice in Footer"
+msgstr ""
+
+#. Text in echo
+#: richflicks/woocommerce/cart/cart.php:138
+msgid "Coupon"
+msgstr ""
+
+#. Text in echo
+#: richflicks/woocommerce/cart/cart.php:138
+msgid "Coupon code"
+msgstr ""
+
+#. Text in function
+#: richflicks/inc/richwp-options.php:1
+msgid "Display Related Posts"
+msgstr ""
+
+#. Text in function
+#: richflicks/inc/richwp-options.php:1
+msgid "Featured Section Headline"
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Featured Widget Area"
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Footer Navigation"
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Footer Widget Area"
+msgstr ""
+
+#. Text in function
+#: richflicks/inc/richwp-options.php:1
+msgid "Header Color"
+msgstr ""
+
+#. Text in function
+#: richflicks/inc/richwp-options.php:1
+msgid "Header Font Color"
+msgstr ""
+
+#. Text in function
+#: richflicks/inc/richwp-options.php:1
+msgid "Header Font Hover Color"
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Icon Menu"
+msgstr ""
+
+#. Text in function
+#: richflicks/inc/richwp-options.php:1
+msgid "Lead Color"
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Menu Shop"
+msgstr ""
+
+#. Text in function
+#: richflicks/inc/richwp-options.php:1
+msgid "Misc."
+msgstr ""
+
+#. Text in function
+#: richflicks/comments.php:34
+msgid "Newer Comments &rarr;"
+msgstr ""
+
+#. Text in echo
+#: richflicks/index.php:88
+msgid "Nothing matched your search criteria. Please try searching again:"
+msgstr ""
+
+#. Text in echo
+#: richflicks/loop.php:9
+msgid "Play Video"
+msgstr ""
+
+#. Text in function
+#: richflicks/inc/richwp-options.php:1
+msgid "Postlist Headline on Front Page"
+msgstr ""
+
+#. Text in echo
+#: richflicks/woocommerce/cart/cart.php:37
+#: richflicks/woocommerce/cart/cart.php:97
+msgid "Price"
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+#: richflicks/header.php:30
+msgid "Primary Menu"
+msgstr ""
+
+#. Text in echo
+#: richflicks/woocommerce/cart/cart.php:36
+#: richflicks/woocommerce/cart/cart.php:79
+msgid "Product"
+msgstr ""
+
+#. Text in echo
+#: richflicks/woocommerce/cart/cart.php:38
+#: richflicks/woocommerce/cart/cart.php:103
+msgid "Quantity"
+msgstr ""
+
+#. Text in function
+#: richflicks/inc/richwp-options.php:1
+msgid "Related Posts Headline"
+msgstr ""
+
+#. Text in function
+#: richflicks/woocommerce/cart/cart.php:121
+msgid "Remove this item"
+msgstr ""
+
+#. Text in echo
+#: richflicks/header.php:47
+#: richflicks/searchform.php:7
+#: richflicks/searchform.php:10
+msgid "Search"
+msgstr ""
+
+#. Text in function
+#: richflicks/index.php:52
+msgid "Search for: %s"
+msgstr ""
+
+#. Text in echo
+#: richflicks/index.php:98
+msgid "Sorry, nothing was found!"
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Top Widget Area"
+msgstr ""
+
+#. Text in echo
+#: richflicks/woocommerce/cart/cart.php:39
+#: richflicks/woocommerce/cart/cart.php:120
+msgid "Total"
+msgstr ""
+
+#. Text in echo
+#: richflicks/woocommerce/cart/cart.php:144
+msgid "Update Cart"
+msgstr ""
+
+#. Text in function
+#: richflicks/functions.php:1
+msgid "Woo Sidebar Widget Area"
+msgstr ""
+
+#. Text in function
+#: richflicks/footer.php:14
+msgid "Y"
+msgstr ""
