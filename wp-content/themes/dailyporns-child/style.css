@@ -7,3 +7,34 @@ Text Domain: dailyporns
 .postbox a .viewpostdisplay {
 	top:0%;
 }
+
+.vp {
+	display:block;
+}
+
+.duration {
+	float:right;
+	color:white;
+	position:relative;
+	clear:both;
+	margin-right:5px;
+	font-size:1em;
+	top:-31px;
+}
+
+.quality {
+	margin:5px;
+	font-weight:bold;
+	color:white;
+	font-size:.8rem;
+}
+
+.time {
+	font-size:small;
+}
+
+.postbox a .entry-title {
+    margin: .8rem 0 .5rem 0;
+    font-size: 1rem;
+    font-weight: 500;
+}

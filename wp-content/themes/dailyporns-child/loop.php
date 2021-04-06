@@ -6,9 +6,10 @@
 						<div class="postlistthumbwrap">
 							<?php the_post_thumbnail( 'post-thumbnail' );?>
 							<div class="viewpostdisplay">
-								<video data-src="<?php echo get_post_meta($post->ID, 'video-thumbnail', true); ?>"></video>
+								<video class="vp" data-src="<?php echo get_post_meta($post->ID, 'video-thumbnail', true); ?>"></video>
 							</div>
 						</div>
+						<div class="duration"><span class="quality"><?php echo get_post_meta($post->ID, 'quality', true);?></span><var class="time"><?php echo get_post_meta($post->ID, 'duration', true);?></var></div>
 					</div>
 				<?php endif;?>
 			
@@ -23,17 +24,6 @@
 					     // view
 					     echo('<span class="icon-views"> </span>');
 					     echo gt_get_post_view();
-					     
-					     echo ('<span style="margin:5px;">');
-					     // duration
-					     echo get_post_meta($post->ID, 'duration', true);
-					     echo ('</span>');
-					     
-					     echo ('<span>');
-					     // quality
-					     echo get_post_meta($post->ID, 'quality', true);
-					     echo ('</span>');
-					     
                          echo('</div>');
 					 endif; ?>
 			</a>
