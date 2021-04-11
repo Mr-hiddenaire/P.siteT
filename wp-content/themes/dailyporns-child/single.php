@@ -32,13 +32,18 @@
 
 
 	<?php 
-	// Related Posts
-    $displayrelatedposts = richflicks_themeoptions('displayrelatedposts'); 
-    	if(!empty($displayrelatedposts)) : 
-    		get_template_part( 'single-related' ); 
-    endif;
-	endwhile; 
+        	// Related Posts
+            $displayrelatedposts = richflicks_themeoptions('displayrelatedposts'); 
+            if(!empty($displayrelatedposts)) : 
+            	get_template_part( 'single-related' ); 
+            endif;
+            if ( comments_open() || get_comments_number() ) :
+                comments_template();
+            endif;
+    	endwhile; 
 	?>
 </div> <!-- #container -->
-
+<script>
+jQuery("form").attr("novalidate", true);
+</script>
 <?php get_footer(); ?>

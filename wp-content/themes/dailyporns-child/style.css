@@ -8,6 +8,9 @@ Text Domain: dailyporns
 	top:0%;
 }
 
+/**
+ * Common
+ */
 .vp {
 	display:block;
 }
@@ -37,4 +40,62 @@ Text Domain: dailyporns
     margin: .8rem 0 .5rem 0;
     font-size: 1rem;
     font-weight: 500;
+}
+
+#wpdcom .wpd-prim-button {
+    background-color: #ec5379;
+    color: #FFFFFF;
+}
+
+#wpdcom .wpd-thread-head .wpd-thread-info {
+    border-bottom: 2px solid #ec5379;
+}
+
+#wpdcom .wpd-thread-head .wpdiscuz-user-settings {
+    border-bottom: 2px solid #ec5379;
+}
+
+#wpdcom .wpd-blog-post_author .wpd-comment-author a {
+    color: #ec5379;
+}
+
+#wpdcom .wpd-blog-post_author .wpd-comment-label {
+    color: #ffffff;
+    background-color: #ec5379;
+    border: none;
+}
+
+#wpdcom.wpd-layout-3 .wpd-reply .wpd-blog-post_author .wpd-comment-right {
+    border-left: 1px solid #666666;
+}
+
+#wpdcom .wpd-comment .wpd-reply-to a {
+    text-decoration: none;
+    opacity: 0.8;
+    color: #ffffff;
+}
+
+#wpdcom .wpd-comment .wpd-reply-to a:hover {
+    background-color: #ec5379;
+}
+
+#wpdcom.wpd-layout-3 .wpd-comment .wpd-comment-footer .wpd-vote-up.wpd-up {
+    border: 1px solid #ec5379;
+}
+
+#wpdcom .wpd-up svg {
+    fill: #ec5379!important;
+}
+
+#wpdcom .wpd-up {
+	color: #aaaaaa !important;
+}
+
+#wpdcom .wpd-auth .wpd-login a {
+    color: #ec5379;
+    text-decoration: none;
+}
+
+#wpdcom .wpd-auth .wpd-login a:hover {
+	background-color: #ffffff;
 }
