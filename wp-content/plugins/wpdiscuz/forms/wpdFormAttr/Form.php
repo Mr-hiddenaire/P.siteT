@@ -418,7 +418,7 @@ class Form {
                 <div class='wpd-rating-value'>
                     <span class='wpdrv'>" . esc_html($rating) . "</span>
                     <span class='wpdrc'>" . esc_html($count) . "</span>
-                    <span class='wpdrt'>" . ((int) $count > 1 ? esc_html($this->wpdOptions->phrases["wc_votes_phrase"]) : esc_html($this->wpdOptions->phrases["wc_vote_phrase"])) . "</span>";
+                    <span class='wpdrt'>" . ((int) $count === 1 ? esc_html($this->wpdOptions->getPhrase("wc_vote_phrase")) : esc_html($this->wpdOptions->getPhrase("wc_votes_phrase"))) . "</span>";
             $html .= "</div>
                 <div class='wpd-rating-title'>" . esc_html($this->getPostRatingTitle()) . "</div>
                 <div class='wpd-rating-stars'>";
@@ -538,7 +538,7 @@ class Form {
                 <div class='wpd-rating-value'>
                     <span class='wpdrv'>" . esc_html($ratingData["average"]) . "</span>
                     <span class='wpdrc'>" . esc_html($ratingData["count"]) . "</span>
-                    <span class='wpdrt'>" . ((int) $ratingData["count"] > 1 ? esc_html($this->wpdOptions->phrases["wc_votes_phrase"]) : esc_html($this->wpdOptions->phrases["wc_vote_phrase"])) . "</span>";
+                    <span class='wpdrt'>" . ((int) $ratingData["count"] === 1 ? esc_html($this->wpdOptions->getPhrase("wc_vote_phrase")) : esc_html($this->wpdOptions->getPhrase("wc_votes_phrase"))) . "</span>";
             $html .= "</div>";
             if ($args["show-label"]) {
                 $html .= "<div class='wpd-rating-title'>" . esc_html($title) . "</div>";
@@ -840,6 +840,7 @@ class Form {
             ?>
             <div id="wpd-editor-wraper-<?php echo esc_attr($uniqueId); ?>" style="display: none;">
                 <div id="wpd-editor-char-counter-<?php echo esc_attr($uniqueId); ?>" class="wpd-editor-char-counter"></div>
+                <label style="display: none;" for="wc-textarea-<?php echo esc_attr($uniqueId); ?>">Label</label>
                 <textarea id="wc-textarea-<?php echo esc_attr($uniqueId); ?>" required name="wc_comment" class="wc_comment wpd-field"></textarea>
                 <div id="wpd-editor-<?php echo esc_attr($uniqueId); ?>"></div>
             <?php $this->renderTextEditorButtons($uniqueId); ?>
@@ -847,16 +848,31 @@ class Form {
             <?php
         } else {
             if ($uniqueId !== "0_0" || $commentsCount) {
-                $textarea_placeholder = $this->wpdOptions->phrases["wc_comment_join_text"];
+                $textarea_placeholder = $this->wpdOptions->getPhrase("wc_comment_join_text", ["unique_id" => $uniqueId]);
             } else {
-                $textarea_placeholder = $this->wpdOptions->phrases["wc_be_the_first_text"];
+                $textarea_placeholder = $this->wpdOptions->getPhrase("wc_be_the_first_text", ["unique_id" => $uniqueId]);
             }
+            if (strrchr($uniqueId, "_") === "_0") {
+				$commentTextMinLength = intval($this->wpdOptions->content["commentTextMinLength"]);
+				$commentTextMaxLength = intval($this->wpdOptions->content["commentTextMaxLength"]);
+			} else {
+				$commentTextMinLength = intval($this->wpdOptions->content["replyTextMinLength"]);
+				$commentTextMaxLength = intval($this->wpdOptions->content["replyTextMaxLength"]);
+			}
+            $commentTextLengthRange = ($commentTextMinLength && $commentTextMaxLength) ? 'pattern=".{' . $commentTextMinLength . ',' . $commentTextMaxLength . '}"' : '';
+            $textareaMaxLength = $commentTextMaxLength ? "maxlength=$commentTextMaxLength" : '';
             ?>
             <div class="wpd-textarea-wrap">
-                <textarea id="wc-textarea-<?php echo esc_attr($uniqueId); ?>" placeholder="<?php echo esc_attr($textarea_placeholder); ?>" aria-label="<?php echo esc_attr($textarea_placeholder); ?>" required name="wc_comment" class="wc_comment wpd-field"></textarea>
+                <div id="wpd-editor-char-counter-<?php echo esc_attr($uniqueId); ?>" class="wpd-editor-char-counter"></div>
+                <label style="display: none;" for="wc-textarea-<?php echo esc_attr($uniqueId); ?>">Label</label>
+                <textarea id="wc-textarea-<?php echo esc_attr($uniqueId); ?>" <?php echo $commentTextLengthRange . ' ' . $textareaMaxLength; ?> placeholder="<?php echo esc_attr($textarea_placeholder); ?>" aria-label="<?php echo esc_attr($textarea_placeholder); ?>" required name="wc_comment" class="wc_comment wpd-field"></textarea>
+            </div>
+            <div class="wpd-editor-buttons-right">
+                <?php
+                echo apply_filters("wpdiscuz_editor_buttons_html", "", $uniqueId);
+                ?>
             </div>
             <?php
-            echo apply_filters("wpdiscuz_editor_buttons_html", "", $uniqueId);
         }
     }
 
@@ -940,7 +956,7 @@ class Form {
             $html .= "</tbody></table>";
         }
         $html .= "<input type='hidden' name='wpdiscuz_unique_id' value='" . esc_attr($uniqueId) . "'>";
-        $html .= "<div class='wc_save_wrap'><input class='wc_cancel_edit wpd-second-button' type='button' value='" . esc_attr($this->wpdOptions->phrases["wc_comment_edit_cancel_button"]) . "'><input id='wpd-field-submit-edit_" . esc_attr($uniqueId) . "' class='wc_save_edited_comment wpd-prim-button' type='submit' value='" . esc_attr($this->wpdOptions->phrases["wc_comment_edit_save_button"]) . "'></div>";
+        $html .= "<div class='wc_save_wrap'><input class='wc_cancel_edit wpd-second-button' type='button' value='" . esc_attr($this->wpdOptions->getPhrase("wc_comment_edit_cancel_button", ["comment" => $comment])) . "'><input id='wpd-field-submit-edit_" . esc_attr($uniqueId) . "' class='wc_save_edited_comment wpd-prim-button' type='submit' value='" . esc_attr($this->wpdOptions->getPhrase("wc_comment_edit_save_button", ["comment" => $comment])) . "'></div>";
         $html .= "</form></div>";
         return wp_send_json_success(['html' => $html, 'content' => $content]);
     }
@@ -1311,7 +1327,7 @@ class Form {
                     if (in_array($role, $this->generalOptions["roles_cannot_see_comments"]) || in_array($role, $this->generalOptions["roles_cannot_comment"])) {
                         //Filter hook to add extra conditions in user role dependent restriction.
                         $user_can_comment = apply_filters("wpdiscuz_user_role_can_comment", false, $role);
-                        $message = $this->wpdOptions->phrases["wc_roles_cannot_comment_message"];
+                        $message = $this->wpdOptions->getPhrase("wc_roles_cannot_comment_message");
                         break;
                     }
                 }
@@ -1529,7 +1545,7 @@ class Form {
                 $avg += $rating * $count;
                 $c += $count;
 			}
-            update_post_meta($post_id, wpdFormConst::WPDISCUZ_RATING_SEPARATE_AVG . $key, round($avg / $c, 1));
+            update_post_meta($post_id, wpdFormConst::WPDISCUZ_RATING_SEPARATE_AVG . $key, ($c === 0 ? 0 : round($avg / $c, 1)));
             update_post_meta($post_id, wpdFormConst::WPDISCUZ_RATING_SEPARATE_COUNT . $key, $c);
 		}
 	}

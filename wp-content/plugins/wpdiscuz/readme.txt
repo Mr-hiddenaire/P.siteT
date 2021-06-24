@@ -3,7 +3,7 @@ Contributors: gVectors Team
 Tags: comment, comments, ajax comments, comment form, comment fields
 Requires at least: 5.0
 Tested up to: 5.7
-Stable tag: 7.1.5
+Stable tag: 7.2.2
 Requires PHP: 5.4 and higher
 License: GPLv3
 License URI: https://www.gnu.org/licenses/gpl-3.0.html
@@ -23,7 +23,6 @@ wpDiscuz version 7 is a revolutionary perspective on the commenting world! This 
 * wpDiscuz Addons: [https://wpdiscuz.com/addons/](https://wpdiscuz.com/addons/)
 * wpDiscuz Documentation: [https://wpdiscuz.com/docs/](https://wpdiscuz.com/docs/)
 * wpDiscuz Addons Bundle: [https://gvectors.com/product/wpdiscuz-addons-bundle/](https://gvectors.com/product/wpdiscuz-addons-bundle/)
-
 
 = Comments - wpDiscuz Features =
 
@@ -89,7 +88,6 @@ wpDiscuz version 7 is a revolutionary perspective on the commenting world! This 
 * | [wpDiscuz - Front-end Moderation](https://gvectors.com/product/wpdiscuz-frontend-moderation/)
 * | [wpDiscuz - Subscription Manager](https://gvectors.com/product/wpdiscuz-subscribe-manager/)
 * | [wpDiscuz - Comment Search](https://gvectors.com/product/wpdiscuz-comment-search/)
-* | [wpDiscuz - Comment Translation](https://gvectors.com/product/wpdiscuz-comment-translation/)
 * | [wpDiscuz - Comment Report and Flagging](https://gvectors.com/product/wpdiscuz-report-flagging/)
 * | [wpDiscuz - Ads Manager](https://gvectors.com/product/wpdiscuz-ads-manager/)
 * | [wpDiscuz - User & Comment Mentioning](https://gvectors.com/product/wpdiscuz-user-comment-mentioning/)
@@ -98,6 +96,11 @@ wpDiscuz version 7 is a revolutionary perspective on the commenting world! This 
 * | [wpDiscuz - Online Users](https://gvectors.com/product/wpdiscuz-online-users/)
 * | [wpDiscuz - Private Comments](https://gvectors.com/product/wpdiscuz-private-comments/)
 * | [wpDiscuz - Syntax Highlighter](https://gvectors.com/product/wpdiscuz-syntax-highlighter/)
+
+= Integration Add-ons =
+
+* | [wpDiscuz - BuddyPress Integration](https://gvectors.com/product/wpdiscuz-buddypress-integration/)
+* | [wpDiscuz - Tenor GIFs Integration](https://gvectors.com/product/wpdiscuz-tenor-integration/)
 
 
 == Installation ==
@@ -179,15 +182,41 @@ Nothing will be lost!  **Comments - wpDiscuz** will show all old comments.
 
 == Changelog ==
 
+= Comments - wpDiscuz v7.2.2 =
+
+* Added: Comment bubble compatibility on WooCommerce product page
+* Added: Open product review tab when user click the comment bubble
+* Fixed Bug: Problem with the media uploader delete button
+* Fixed Bug: Issues with the user mentioning feature
+
+**IMPORTANT!**
+* Please don't forget delete all caches and purge CDN after the update.
+
+
+= Comments - wpDiscuz v7.2.1 =
+
+* New Addon: [wpDiscuz - Tenor GIFs Integration](https://gvectors.com/product/wpdiscuz-tenor-integration/)
+* Fixed Bug: Issues on product pages
+* Fixed Bug: Problem with placeholder of the rich comment editor
+* Fixed Bug: Problem with unsubscribe URL when it links to the home page
+* Fixed Bug: Conflicts with Facebook widgets
+
+
+= Comments - wpDiscuz v7.2.0 =
+
+* New Addon: [wpDiscuz - BuddyPress Integration](https://gvectors.com/product/wpdiscuz-buddypress-integration/)
+* Added: Option to set replies maximum length
+* Added: Character counter for comment field (plain text mode)
+* Added: Sends email notification to followers and mentioned users once comment is approved
+* Fixed Bug: Comment editor placeholder issue
+* Fixed Bug: Missing calendar icon
+* Fixed Bug: Lots of small bugs have been fixed
+
+
 = Comments - wpDiscuz v7.1.5 =
 
 * Fixed Bug: Small issue with feedback forms
 * Added: Removes post related feedback forms when post is deleted
-
-
-**IMPORTANT!**
-1. Please don't forget delete all caches and purge CDN after the update.
-2. If you're updating from 5.x.x versions please read this topic: [https://wordpress.org/support/topic/before-updating-to-wpdiscuz-7-version/](https://wordpress.org/support/topic/before-updating-to-wpdiscuz-7-version/)
 
 
 = Comments - wpDiscuz v7.1.4 =
@@ -204,10 +233,6 @@ Nothing will be lost!  **Comments - wpDiscuz** will show all old comments.
 
 * Updated: Better protection of AJAX requests
 * Updated: Better optimization of AJAX requests
-
-**IMPORTANT!**
-1. Please don't forget delete all caches and purge CDN after the update.
-2. If you're updating from 5.x.x versions please read this topic: [https://wordpress.org/support/topic/before-updating-to-wpdiscuz-7-version/](https://wordpress.org/support/topic/before-updating-to-wpdiscuz-7-version/)
 
 
 = Comments - wpDiscuz v7.1.2 =

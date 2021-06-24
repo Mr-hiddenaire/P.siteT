@@ -61,13 +61,12 @@ class WpdiscuzHelperUpload implements WpDiscuzConstants {
             $type = apply_filters("wpdiscuz_mu_upload_type", "");
             $faIcon = apply_filters("wpdiscuz_mu_upload_icon", "far fa-image");
             $allowedExts = apply_filters("wpdiscuz_mu_allowed_extensions", "accept='image/*'");
-            $html .= "<span class='wmu-upload-wrap' wpd-tooltip='" . esc_attr($this->options->phrases["wmuAttachImage"]) . "' wpd-tooltip-position='" . (!is_rtl() ? 'left' : 'right' ) . "'>";
+            $html .= "<span class='wmu-upload-wrap' wpd-tooltip='" . esc_attr($this->options->getPhrase("wmuAttachImage", ["unique_id" => $uniqueId])) . "' wpd-tooltip-position='" . (!is_rtl() ? 'left' : 'right' ) . "'>";
             $html .= "<label class='wmu-add'>";
             $html .= "<i class='$faIcon'></i>";
             $html .= "<input style='display:none;' class='wmu-add-files' type='file' name='" . self::INPUT_NAME . "[]' $type $allowedExts/>";
             $html .= "</label>";
             $html .= "</span>";
-            $html .= "<div class='wpd-clear'></div>";
         }
         return $html;
     }
@@ -241,6 +240,7 @@ class WpdiscuzHelperUpload implements WpDiscuzConstants {
         check_ajax_referer($nonceKey, "wmu_nonce");
         $response = ["errorCode" => "", "error" => "", "errors" => [], "attachmentsHtml" => "", "previewsData" => ""];
         $postId = empty($_POST["postId"]) ? 0 : intval($_POST["postId"]);
+		$uniqueId = isset($_POST["uniqueId"]) ? trim($_POST["uniqueId"]) : "";
 
         if (!$postId) {
             $response["errorCode"] = "msgPostIdNotExists";
@@ -344,7 +344,7 @@ class WpdiscuzHelperUpload implements WpDiscuzConstants {
                 $file["type"] = $mimeType;
             } else {
                 $error = true;
-                $response["errors"][] = $file["name"] . " " . (current_user_can("manage_options") ? "(mimetype - " . $mimeType . ") " : "") . "- " . $this->options->phrases["wmuPhraseNotAllowedFile"];
+                $response["errors"][] = $file["name"] . " " . (current_user_can("manage_options") ? "(mimetype - " . $mimeType . ") " : "") . "- " . $this->options->getPhrase("wmuPhraseNotAllowedFile");
             }
 
             do_action("wpdiscuz_mu_preupload", $file);
@@ -370,7 +370,7 @@ class WpdiscuzHelperUpload implements WpDiscuzConstants {
             $response["attachmentsHtml"] .= "</div>";
             $response["previewsData"] = $attachmentsData;
             if ($allowedCount == 1) {
-                $response["tooltip"] = $this->options->phrases["wmuChangeImage"];
+                $response["tooltip"] = $this->options->getPhrase("wmuChangeImage", ["unique_id" => $uniqueId]);
             }
         }
 
@@ -416,6 +416,7 @@ class WpdiscuzHelperUpload implements WpDiscuzConstants {
 	    check_ajax_referer($nonceKey, "wmu_nonce");
         $response = ["errorCode" => "", "error" => "", "attachmentsHtml" => ""];
         $attachmentId = isset($_POST["attachmentId"]) ? intval($_POST["attachmentId"]) : 0;
+		$uniqueId = isset($_POST["uniqueId"]) ? trim($_POST["uniqueId"]) : "";
         $attachment = get_post($attachmentId);
 
         // add attachment not exists message in wpdoptions > jsargs
@@ -461,7 +462,7 @@ class WpdiscuzHelperUpload implements WpDiscuzConstants {
             $response["attachmentsHtml"] .= "<input class='wmu-attachments-data' type='hidden' value='" . esc_attr(json_encode($attachmentsData)) . "'/>";
             $response["attachmentsHtml"] .= "</div>";
         } else {
-            $response["tooltip"] = $this->options->phrases["wmuAttachImage"];
+            $response["tooltip"] = $this->options->getPhrase("wmuAttachImage", ["unique_id" => $uniqueId]);
         }
         wp_send_json_success($response);
     }
@@ -707,20 +708,20 @@ class WpdiscuzHelperUpload implements WpDiscuzConstants {
         return $hasItems;
     }
 
-    public static function canEditAttachments($currentUser, $attachment) {
-        return current_user_can("delete_others_posts") || (!empty($currentUser->ID) && $currentUser->ID == $attachment->post_author) || (WpdiscuzHelper::getRealIPAddr() == get_post_meta($attachment->ID, self::METAKEY_ATTCHMENT_OWNER_IP, true));
-    }
+	public function canEditAttachments($currentUser, $attachment) {
+		$args = [];
+		if (isset($this->currentUser->user_email)) {
+			$args["comment_author_email"] = $this->currentUser->user_email;
+		}
+		$commentId = get_post_meta($attachment->ID, self::METAKEY_ATTCHMENT_COMMENT_ID, true);
+		$comment = get_comment($commentId);
+		return current_user_can("moderate_comments") || ($this->helper->isCommentEditable($comment) && $this->helper->canUserEditComment($comment, $currentUser, $args));
+	}
 
-    private function getDeleteHtml($currentUser, $attachment, $type) {
-        $args = [];
-        if (isset($this->currentUser->user_email)) {
-            $args["comment_author_email"] = $this->currentUser->user_email;
-        }
-        $commentId = get_post_meta($attachment->ID, self::METAKEY_ATTCHMENT_COMMENT_ID, true);
-        $comment = get_comment($commentId);
-        $deleteHtml = "<div class='wmu-attachment-delete wmu-delete-$type' title='" . esc_html__("Delete", "wpdiscuz") . "' data-wmu-attachment='$attachment->ID'>&nbsp;</div>";
-        return current_user_can("moderate_comments") || ($this->helper->isCommentEditable($comment) && $this->helper->canUserEditComment($comment, $currentUser, $args)) ? $deleteHtml : "<div class='wmu-separator'></div>";
-    }
+	public function getDeleteHtml($currentUser, $attachment, $type) {
+		$deleteHtml = "<div class='wmu-attachment-delete wmu-delete-$type' title='" . esc_html__("Delete", "wpdiscuz") . "' data-wmu-attachment='$attachment->ID'>&nbsp;</div>";
+		return $this->canEditAttachments($currentUser, $attachment) ? $deleteHtml : "<div class='wmu-separator'></div>";
+	}
 
     public function commentListArgs($args) {
         if (empty($args["current_user"])) {

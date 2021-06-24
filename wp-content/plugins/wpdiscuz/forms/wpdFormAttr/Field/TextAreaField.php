@@ -56,7 +56,7 @@ class TextAreaField extends Field {
         $html .= "<label for='" . esc_attr($key) . "'>" . esc_html($data["name"]) . ": </label>";
         $html .= "</td><td>";
         $html .= "<div class='wpdiscuz-item'>";
-        $required = $data["required"] ? "required='required'" : "";
+        $required = $data["required"] ? "required='required' aria-required='true'" : "";
         $html .= "<textarea  $required class='wpd-field wpd-field-textarea' id='" . esc_attr($key) . "'  name='" . esc_attr($key) . "'>" . esc_html($value) . "</textarea>";
         $html .= "</div>";
         $html .= "</td></tr>";
@@ -69,7 +69,7 @@ class TextAreaField extends Field {
         }
         ?>
         <div class="wpdiscuz-item <?php echo "$name-wrapper"; ?>">
-            <?php $required = $args["required"] ? "required='required'" : ""; ?>
+            <?php $required = $args["required"] ? "required='required' aria-required='true'" : ""; ?>
             <textarea id="<?php echo esc_attr($name) . "-" . $uniqueId; ?>" <?php echo $required; ?> class="<?php echo esc_attr($name); ?> wpd-field wpd-field-textarea"  name="<?php echo esc_attr($name); ?>" value="" placeholder="<?php echo esc_attr__($args["name"], "wpdiscuz") . (!empty($args["required"]) ? "*" : ""); ?>"></textarea>
             <label for="<?php echo esc_attr($name) . "-" . $uniqueId; ?>" class="wpdlb"><?php echo esc_attr__($args["name"], "wpdiscuz") . (!empty($args["required"]) ? "*" : ""); ?></label>
             <?php if ($args["desc"]) { ?>

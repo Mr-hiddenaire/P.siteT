@@ -54,6 +54,8 @@ class WpdiscuzRest extends WP_REST_Controller {
 		$response  = ["ids" => [], "commentIDsToRemove" => []];
 		$status    = current_user_can("moderate_comments") ? "all" : "approved";
 		$args      = ["status" => $status, "post_id" => $params["postId"]];
+		global $wpdiscuz;
+		$wpdiscuz->isWpdiscuzLoaded = true;
 		$commentId = $this->dbManager->getLastCommentId($args);
 		if ($params["visibleCommentIds"]) {
 			$response["commentIDsToRemove"] = $this->dbManager->commentIDsToRemove($args, $params["visibleCommentIds"]);
@@ -84,7 +86,7 @@ class WpdiscuzRest extends WP_REST_Controller {
 							$gravatarUserId    = $user->ID;
 							$gravatarUserEmail = $user->user_email;
 						} else {
-							$authorName        = $comment->comment_author ? $comment->comment_author : esc_html($this->options->phrases["wc_anonymous"]);
+							$authorName        = $comment->comment_author ? $comment->comment_author : esc_html($this->options->getPhrase("wc_anonymous"));
 							$authorAvatarField = $comment->comment_author_email;
 							$gravatarUserId    = 0;
 							$gravatarUserEmail = $comment->comment_author_email;

@@ -189,6 +189,7 @@ _:-ms-lang(x), .wpd-social-login [wpd-tooltip]::before{top: -24px;}
 #wpdcom .wpd-form-wrap{padding-bottom: 10px;}
 #wpdcom .wpd-form .wpdiscuz-textarea-wrap{display: flex; flex-wrap: nowrap; flex-direction: row; justify-content:space-between; padding: 20px 0; align-items: center;}
 #wpdcom .wpd-form .wpdiscuz-textarea-wrap [id^=wpd-editor-wraper]{flex-grow:1; position: relative; width: 100%;/*overflow: hidden;*/}
+#wpdcom .wpd-form .wpd-textarea-wrap{position: relative;}
 #wpdcom .wpd-form .wpdiscuz-textarea-wrap [id^=wpd-editor-wraper] textarea{width: 100%;}
 #wpdcom .wpd-form .wpd-avatar{margin-left: 15px; border-radius: 100%; text-align: right;flex-shrink: 0; align-self: flex-start;}
 #wpdcom .wpd-form .wpd-avatar img,
@@ -216,6 +217,9 @@ _:-ms-lang(x), .wpd-social-login [wpd-tooltip]::before{top: -24px;}
 #wpdcom .wpd-form .wpdiscuz-textarea-wrap.wpd-txt .wpd-textarea-wrap textarea{width: 100%;}
 #wpdcom .wpd-form .wpdiscuz-textarea-wrap.wpd-txt .wmu-upload-wrap {flex-basis: 100%; text-align: left; margin-top: 3px;}
 #wpdcom .wpd-form .wpdiscuz-textarea-wrap.wpd-txt .wmu-upload-wrap i{color: #888; font-size: 18px;}
+#wpdcom .wpd-form .wpdiscuz-textarea-wrap .wpd-editor-buttons-right{float:right;}
+#wpdcom .wpd-form .wpdiscuz-textarea-wrap.wpd-txt .wpd-editor-buttons-right{display:flex;align-items:center;margin-right: auto;}
+#comments #wpdcom .wpd-form .wpd_comm_form .wpdiscuz-textarea-wrap.wpd-txt .wpd-editor-buttons-right span{display: inline-block;margin:2px;}
 #wpdcom .wpd-form .wpdiscuz-textarea-wrap.wpd-txt [wpd-tooltip]::after{left: 28px; right: auto;}
 #wpdcom .wpd-form .wpdiscuz-textarea-wrap.wpd-txt [wpd-tooltip]::before{left: 25px; right:auto;}
 #wpdcom .wpd-form .wpdiscuz-textarea-wrap.wpd-txt .quicktags-toolbar .ed_button {opacity: 0.8; box-shadow:none; background: #eeeeee; color: #666; font-size: 13px; padding: 1px 12px; margin: 2px 1px; display: inline-block; border-radius: 0; line-height: 20px;}

@@ -9,11 +9,13 @@ class WpdiscuzHelperOptimization implements WpDiscuzConstants {
 	private $options;
 	private $dbManager;
 	private $helperEmail;
+	private $helper;
 
-	public function __construct($options, $dbManager, $helperEmail) {
+	public function __construct($options, $dbManager, $helperEmail, $helper) {
 		$this->options     = $options;
 		$this->dbManager   = $dbManager;
 		$this->helperEmail = $helperEmail;
+		$this->helper = $helper;
 		add_action("deleted_comment", [&$this, "cleanCommentRelatedRows"], 10, 2);
 		add_action("delete_user", [&$this, "deleteUserRelatedData"], 11, 2);
 		add_action("profile_update", [&$this, "onProfileUpdate"], 10, 2);
@@ -62,10 +64,10 @@ class WpdiscuzHelperOptimization implements WpDiscuzConstants {
 	 */
 	public function statusEventHandler($newStatus, $oldStatus, $comment) {
 		if ($newStatus !== $oldStatus && $newStatus === "approved") {
-			$this->notifyOnApprove($comment);
 			if ($this->options->subscription["isNotifyOnCommentApprove"]) {
 				$this->helperEmail->notifyOnApproving($comment);
 			}
+			$this->notifyOnApprove($comment);
 		}
 	}
 
@@ -118,7 +120,12 @@ class WpdiscuzHelperOptimization implements WpDiscuzConstants {
 		$commentId     = $comment->comment_ID;
 		$email         = $comment->comment_author_email;
 		$parentComment = get_comment($comment->comment_parent);
+		if (apply_filters("wpdiscuz_enable_user_mentioning", $this->options->subscription["enableUserMentioning"]) && $this->options->subscription["sendMailToMentionedUsers"] && ($mentionedUsers = $this->helper->getMentionedUsers($comment->comment_content))) {
+			$this->helperEmail->sendMailToMentionedUsers($mentionedUsers, $comment);
+		}
+		do_action("wpdiscuz_before_sending_emails", $commentId, $comment);
 		$this->helperEmail->notifyPostSubscribers($postId, $commentId, $email);
+		$this->helperEmail->notifyFollowers($postId, $commentId, $email);
 		if ($parentComment) {
 			$parentCommentEmail = $parentComment->comment_author_email;
 			if ($parentCommentEmail !== $email) {
@@ -131,6 +138,7 @@ class WpdiscuzHelperOptimization implements WpDiscuzConstants {
 	public function removeVoteData() {
 		if (isset($_GET["_wpnonce"]) && wp_verify_nonce($_GET["_wpnonce"], "removeVoteData") && current_user_can("manage_options")) {
 			$this->dbManager->removeVotes();
+			do_action("wpdiscuz_remove_vote_data");
 			wp_redirect(admin_url("admin.php?page=" . self::PAGE_SETTINGS . "&wpd_tab=" . self::TAB_GENERAL));
 		}
 	}

@@ -190,6 +190,16 @@ class WpdiscuzDBManager implements WpDiscuzConstants {
 		return array_values(array_diff(explode(",", $visibleCommentIds), $notRemovedCommentIDs));
 	}
 
+	public function getUserByNickname($nickname) {
+		$sql = $this->db->prepare("SELECT `u`.`ID`, `u`.`user_email`, `u`.`display_name` FROM `{$this->db->users}` AS `u` INNER JOIN `{$this->db->usermeta}` AS `um` ON `u`.`ID` = `um`.`user_id` AND `um`.`meta_key` = 'nickname' WHERE `um`.`meta_value` = %s LIMIT 1", $nickname);
+		return $this->db->get_row($sql);
+	}
+
+	public function getUserByNicknameOrNicename($nickname) {
+		$sql = $this->db->prepare("SELECT `u`.`ID`, `u`.`user_email`, `u`.`display_name` FROM `{$this->db->users}` AS `u` INNER JOIN `{$this->db->usermeta}` AS `um` ON `u`.`ID` = `um`.`user_id` AND `um`.`meta_key` = 'nickname' WHERE `um`.`meta_value` = %s OR `u`.`user_nicename` = %s LIMIT 1", $nickname, $nickname);
+		return $this->db->get_row($sql);
+	}
+
     /**
      * @param type $visibleCommentIds comment ids which is visible at the moment on front end
      * @param type $email the current user email
@@ -1024,7 +1034,7 @@ class WpdiscuzDBManager implements WpDiscuzConstants {
     }
 
     public function getRebuildRatingsData($startId, $limit) {
-        $sql = $this->db->prepare("SELECT * FROM `{$this->db->postmeta}` WHERE `meta_key` = %s AND `meta_id` > %d LIMIT %d", self::POSTMETA_RATING_COUNT, $startId, $limit);
+        $sql = $this->db->prepare("SELECT * FROM `{$this->db->postmeta}` WHERE `meta_key` = %s AND `meta_id` > %d ORDER BY `meta_id` ASC LIMIT %d", self::POSTMETA_RATING_COUNT, $startId, $limit);
         return $this->db->get_results($sql, ARRAY_A);
     }
 

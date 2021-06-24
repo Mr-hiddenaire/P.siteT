@@ -107,28 +107,28 @@ class WpdiscuzHelper implements WpDiscuzConstants {
             $diff = $now->diff($ago);
             if ($diff->y) {
                 $replace[] = $diff->y;
-                $replace[] = $diff->y > 1 ? esc_html($this->options->phrases["wc_year_text_plural"]) : esc_html($this->options->phrases["wc_year_text"]);
+                $replace[] = $diff->y > 1 ? esc_html($this->options->getPhrase("wc_year_text_plural")) : esc_html($this->options->getPhrase("wc_year_text"));
             } else if ($diff->m) {
                 $replace[] = $diff->m;
-                $replace[] = $diff->m > 1 ? esc_html($this->options->phrases["wc_month_text_plural"]) : esc_html($this->options->phrases["wc_month_text"]);
+                $replace[] = $diff->m > 1 ? esc_html($this->options->getPhrase("wc_month_text_plural")) : esc_html($this->options->getPhrase("wc_month_text"));
             } else if ($diff->d) {
                 $replace[] = $diff->d;
-                $replace[] = $diff->d > 1 ? esc_html($this->options->phrases["wc_day_text_plural"]) : esc_html($this->options->phrases["wc_day_text"]);
+                $replace[] = $diff->d > 1 ? esc_html($this->options->getPhrase("wc_day_text_plural")) : esc_html($this->options->getPhrase("wc_day_text"));
             } else if ($diff->h) {
                 $replace[] = $diff->h;
-                $replace[] = $diff->h > 1 ? esc_html($this->options->phrases["wc_hour_text_plural"]) : esc_html($this->options->phrases["wc_hour_text"]);
+                $replace[] = $diff->h > 1 ? esc_html($this->options->getPhrase("wc_hour_text_plural")) : esc_html($this->options->getPhrase("wc_hour_text"));
             } else if ($diff->i) {
                 $replace[] = $diff->i;
-                $replace[] = $diff->i > 1 ? esc_html($this->options->phrases["wc_minute_text_plural"]) : esc_html($this->options->phrases["wc_minute_text"]);
+                $replace[] = $diff->i > 1 ? esc_html($this->options->getPhrase("wc_minute_text_plural")) : esc_html($this->options->getPhrase("wc_minute_text"));
             } else if ($diff->s) {
                 $replace[] = $diff->s;
-                $replace[] = $diff->s > 1 ? esc_html($this->options->phrases["wc_second_text_plural"]) : esc_html($this->options->phrases["wc_second_text"]);
+                $replace[] = $diff->s > 1 ? esc_html($this->options->getPhrase("wc_second_text_plural")) : esc_html($this->options->getPhrase("wc_second_text"));
             }
             if ($replace) {
-                $replace[] = esc_html($this->options->phrases["wc_ago_text"]);
+                $replace[] = esc_html($this->options->getPhrase("wc_ago_text"));
                 $text = str_replace($search, $replace, $this->options->general["dateDiffFormat"]);
             } else {
-                $text = esc_html($this->options->phrases["wc_right_now_text"]);
+                $text = esc_html($this->options->getPhrase("wc_right_now_text"));
             }
         }
         return $text;
@@ -202,9 +202,14 @@ class WpdiscuzHelper implements WpDiscuzConstants {
     /**
      * checks if the current comment content is in min/max range defined in options
      */
-    public function isContentInRange($commentContent) {
-        $commentMinLength = intval($this->options->content["commentTextMinLength"]);
-        $commentMaxLength = intval($this->options->content["commentTextMaxLength"]);
+    public function isContentInRange($commentContent, $isReply) {
+        if ($isReply) {
+            $commentMinLength = intval($this->options->content["replyTextMinLength"]);
+            $commentMaxLength = intval($this->options->content["replyTextMaxLength"]);
+        } else {
+			$commentMinLength = intval($this->options->content["commentTextMinLength"]);
+			$commentMaxLength = intval($this->options->content["commentTextMaxLength"]);
+        }
         $commentContent = trim(strip_tags($commentContent));
         $contentLength = function_exists("mb_strlen") ? mb_strlen($commentContent) : strlen($commentContent);
         return ($commentMinLength && $contentLength >= $commentMinLength) && ($commentMaxLength == 0 || $contentLength <= $commentMaxLength);
@@ -242,7 +247,7 @@ class WpdiscuzHelper implements WpDiscuzConstants {
     }
 
     public static function getCommentExcerpt($commentContent, $uniqueId, $options) {
-        $readMoreLink = "<span id='wpdiscuz-readmore-" . esc_attr($uniqueId) . "'><span class='wpdiscuz-hellip'>&hellip;&nbsp;</span><span class='wpdiscuz-readmore' title='" . esc_attr($options->phrases["wc_read_more"]) . "'>" . esc_html($options->phrases["wc_read_more"]) . "</span></span>";
+        $readMoreLink = "<span id='wpdiscuz-readmore-" . esc_attr($uniqueId) . "'><span class='wpdiscuz-hellip'>&hellip;&nbsp;</span><span class='wpdiscuz-readmore' title='" . esc_attr($options->getPhrase("wc_read_more")) . "'>" . esc_html($options->getPhrase("wc_read_more")) . "</span></span>";
         return "<p>" . wp_trim_words($commentContent, $options->content["commentReadMoreLimit"], $readMoreLink) . "</p>";
     }
 
@@ -291,10 +296,10 @@ class WpdiscuzHelper implements WpDiscuzConstants {
 
     private function _spoiler($matches) {
         $html = "<div class='wpdiscuz-spoiler-wrap'>";
-        $title = esc_html($this->options->phrases["wc_spoiler"]);
+        $title = esc_html($this->options->getPhrase("wc_spoiler"));
         $matches[3] = str_replace(["&#8221;", "&#8220;", "&#8243;", "&#8242;"], "\"", $matches[3]);
         if (preg_match("@title[^\S]*=[^\S]*\"*([^\"]+)\"@is", $matches[3], $titleMatch)) {
-            $title = trim($titleMatch[1]) ? trim($titleMatch[1]) : esc_html($this->options->phrases["wc_spoiler"]);
+            $title = trim($titleMatch[1]) ? trim($titleMatch[1]) : esc_html($this->options->getPhrase("wc_spoiler"));
         }
 
         $html .= "<div class='wpdiscuz-spoiler wpdiscuz-spoiler-closed'><i class='fas fa-plus' aria-hidden='true'></i>" . $title . "</div>";
@@ -334,7 +339,7 @@ class WpdiscuzHelper implements WpDiscuzConstants {
         if (in_array("comment_form_top", $wp_current_filter) && isset($theChampLoginOptions["providers"]) && is_array($theChampLoginOptions["providers"]) && count($theChampLoginOptions["providers"]) > 0) {
             $html = "<style type='text/css'>#wpcomm .wc_social_plugin_wrapper .wp-social-login-connect-with_by_the_champ{float:left;font-size:13px;padding:5px 7px 0 0;text-transform:uppercase}#wpcomm .wc_social_plugin_wrapper ul.wc_social_login_by_the_champ{list-style:none outside none!important;margin:0!important;padding-left:0!important}#wpcomm .wc_social_plugin_wrapper ul.wc_social_login_by_the_champ .theChampLogin{width:24px!important;height:24px!important}#wpcomm .wpd-secondary-forms-social-content ul.wc_social_login_by_the_champ{list-style:none outside none!important;margin:0!important;padding-left:0!important}#wpcomm .wpd-secondary-forms-social-content ul.wc_social_login_by_the_champ .theChampLogin{width:24px!important;height:24px!important}#wpcomm .wpd-secondary-forms-social-content ul.wc_social_login_by_the_champ li{float:right!important}#wpcomm .wc_social_plugin_wrapper .theChampFacebookButton{ display:block!important; }#wpcomm .theChampTwitterButton{background-position:-4px -68px!important}#wpcomm .theChampGoogleButton{background-position:-36px -2px!important}#wpcomm .theChampVkontakteButton{background-position:-35px -67px!important}#wpcomm .theChampLinkedinButton{background-position:-34px -34px!important;}.theChampCommentingTabs #wpcomm li{ margin:0px 1px 10px 0px!important; }</style>";
             $html .= "<div class='wp-social-login-widget'>";
-            $html .= "<div class='wp-social-login-connect-with_by_the_champ'>" . esc_html($this->options->phrases["wc_connect_with"]) . ":</div>";
+            $html .= "<div class='wp-social-login-connect-with_by_the_champ'>" . esc_html($this->options->getPhrase("wc_connect_with")) . ":</div>";
             $html .= "<div class='wp-social-login-provider-list'>";
             if (isset($theChampLoginOptions["gdpr_enable"])) {
                 $html .= "<div class='heateor_ss_sl_optin_container'><label><input type='checkbox' class='heateor_ss_social_login_optin' value='1' />" . str_replace($theChampLoginOptions["ppu_placeholder"], "<a href='" . esc_url_raw($theChampLoginOptions["privacy_policy_url"]) . "' target='_blank'>" . $theChampLoginOptions["ppu_placeholder"] . "</a>", wp_strip_all_tags($theChampLoginOptions["privacy_policy_optin_text"])) . "</label></div>";
@@ -388,12 +393,12 @@ class WpdiscuzHelper implements WpDiscuzConstants {
 
     public function commentRowStickAction($actions, $comment) {
         if (!$comment->comment_parent) {
-            $stickText = $comment->comment_type === self::WPDISCUZ_STICKY_COMMENT ? $this->options->phrases["wc_unstick_comment"] : $this->options->phrases["wc_stick_comment"];
+            $stickText = $comment->comment_type === self::WPDISCUZ_STICKY_COMMENT ? $this->options->getPhrase("wc_unstick_comment", ["comment" => $comment]) : $this->options->getPhrase("wc_stick_comment", ["comment" => $comment]);
             if (intval(get_comment_meta($comment->comment_ID, self::META_KEY_CLOSED, true))) {
-                $closeText = $this->options->phrases["wc_open_comment"];
+                $closeText = $this->options->getPhrase("wc_open_comment", ["comment" => $comment]);
                 $closeIcon = "fa-lock";
             } else {
-                $closeText = $this->options->phrases["wc_close_comment"];
+                $closeText = $this->options->getPhrase("wc_close_comment", ["comment" => $comment]);
                 $closeIcon = "fa-unlock";
             }
             $actions["stick"] = "<a data-comment='" . $comment->comment_ID . "' data-post='" . $comment->comment_post_ID . "' class='wpd_stick_btn' href='#'> <i class='fas fa-thumbtack'></i> <span class='wpd_stick_text'>" . esc_html($stickText) . "</span></a>";
@@ -418,7 +423,7 @@ class WpdiscuzHelper implements WpDiscuzConstants {
             $dateFormat = $this->options->wp["dateFormat"];
             $timeFormat = $this->options->wp["timeFormat"];
             if (self::isPostedToday($comment)) {
-                $postedDate = $this->options->phrases["wc_posted_today_text"] . " " . mysql2date($timeFormat, $comment->comment_date);
+                $postedDate = $this->options->getPhrase("wc_posted_today_text") . " " . mysql2date($timeFormat, $comment->comment_date);
             } else {
                 $postedDate = get_comment_date($dateFormat . " " . $timeFormat, $comment->comment_ID);
             }
@@ -433,7 +438,7 @@ class WpdiscuzHelper implements WpDiscuzConstants {
             $dateFormat = $this->options->wp["dateFormat"];
             $timeFormat = $this->options->wp["timeFormat"];
             if ($this->isPostPostedToday($post)) {
-                $postedDate = $this->options->phrases["wc_posted_today_text"] . " " . mysql2date($timeFormat, $post->post_date);
+                $postedDate = $this->options->getPhrase("wc_posted_today_text") . " " . mysql2date($timeFormat, $post->post_date);
             } else {
                 $postedDate = get_the_date($dateFormat . " " . $timeFormat, $post);
             }
@@ -448,7 +453,7 @@ class WpdiscuzHelper implements WpDiscuzConstants {
             $dateFormat = $this->options->wp["dateFormat"];
             $timeFormat = $this->options->wp["timeFormat"];
             if (self::isPostedToday($comment)) {
-                $postedDate = $this->options->phrases["wc_posted_today_text"] . " " . mysql2date($timeFormat, $comment);
+                $postedDate = $this->options->getPhrase("wc_posted_today_text") . " " . mysql2date($timeFormat, $comment);
             } else {
                 $postedDate = date($dateFormat . " " . $timeFormat, strtotime($comment));
             }
@@ -505,10 +510,10 @@ class WpdiscuzHelper implements WpDiscuzConstants {
             $response .= "</div>";
             $response .= "<div class='wpd-user-email-delete-links-wrap'>";
             $response .= "<a href='#' class='wpd-user-email-delete-links wpd-not-clicked'>";
-            $response .= esc_html($this->options->phrases["wc_user_settings_email_me_delete_links"]);
+            $response .= esc_html($this->options->getPhrase("wc_user_settings_email_me_delete_links"));
             $response .= "<span class='wpd-loading wpd-hide'><i class='fas fa-pulse fa-spinner'></i></span>";
             $response .= "</a>";
-            $response .= "<div class='wpd-bulk-desc'>" . esc_html($this->options->phrases["wc_user_settings_email_me_delete_links_desc"]) . "</div>";
+            $response .= "<div class='wpd-bulk-desc'>" . esc_html($this->options->getPhrase("wc_user_settings_email_me_delete_links_desc")) . "</div>";
             $response .= "</div>";
             $response .= "</div>";
         } else if ($currentUserEmail) {
@@ -522,7 +527,7 @@ class WpdiscuzHelper implements WpDiscuzConstants {
             $response .= "</div>";
         } else {
             $response .= "<div class='wpd-wrapper'>";
-            $response .= esc_html($this->options->phrases["wc_user_settings_no_data"]);
+            $response .= esc_html($this->options->getPhrase("wc_user_settings_no_data"));
             $response .= "</div>";
         }
         wp_die($response);
@@ -537,7 +542,7 @@ class WpdiscuzHelper implements WpDiscuzConstants {
         if ($commentCount) {
             $html .= "<div class='wpd-user-settings-button-wrap'>";
             $html .= "<div class='wpd-user-settings-button wpd-delete-all-comments wpd-not-clicked' data-wpd-delete-action='deleteComments'>";
-            $html .= esc_html($this->options->phrases["wc_user_settings_request_deleting_comments"]);
+            $html .= esc_html($this->options->getPhrase("wc_user_settings_request_deleting_comments"));
             $html .= "<span class='wpd-loading wpd-hide'><i class='fas fa-spinner fa-pulse'></i></span>";
             $html .= "</div>";
             $html .= "</div>";
@@ -554,7 +559,7 @@ class WpdiscuzHelper implements WpDiscuzConstants {
         if ($subscriptions) {
             $html .= "<div class='wpd-user-settings-button-wrap'>";
             $html .= "<div class='wpd-user-settings-button wpd-delete-all-subscriptions wpd-not-clicked' data-wpd-delete-action='deleteSubscriptions'>";
-            $html .= esc_html($this->options->phrases["wc_user_settings_cancel_subscriptions"]);
+            $html .= esc_html($this->options->getPhrase("wc_user_settings_cancel_subscriptions"));
             $html .= "<span class='wpd-loading wpd-hide'><i class='fas fa-spinner fa-pulse'></i></span>";
             $html .= "</div>";
             $html .= "</div>";
@@ -569,7 +574,7 @@ class WpdiscuzHelper implements WpDiscuzConstants {
         }
         $html .= "<div class='wpd-user-settings-button-wrap " . $cookieBtnClass . "'>";
         $html .= "<div class='wpd-user-settings-button wpd-delete-all-cookies wpd-not-clicked' data-wpd-delete-action='deleteCookies'>";
-        $html .= esc_html($this->options->phrases["wc_user_settings_clear_cookie"]);
+        $html .= esc_html($this->options->getPhrase("wc_user_settings_clear_cookie"));
         $html .= "<span class='wpd-loading wpd-hide'><i class='fas fa-spinner fa-pulse'></i></span>";
         $html .= "</div>";
         $html .= "</div>";
@@ -649,11 +654,15 @@ class WpdiscuzHelper implements WpDiscuzConstants {
     }
 
     public static function fixEmailFrom($domain) {
-        $domain = strtolower($domain);
-        if (substr($domain, 0, 4) === "www.") {
-            $domain = substr($domain, 4);
-        }
-        return $domain;
+		$domain = strtolower($domain);
+		if (substr($domain, 0, 4) === "www.") {
+			$domain = substr($domain, 4);
+		}
+		$localhost = ['127.0.0.1', '::1'];
+		if (in_array($_SERVER['REMOTE_ADDR'], $localhost, true)) {
+			$domain .= ".com";
+		}
+		return $domain;
     }
 
     public function fixLocalhostIp($ip) {
@@ -787,7 +796,7 @@ class WpdiscuzHelper implements WpDiscuzConstants {
     }
 
     public function userMentioning($content, $comment, $args = []) {
-        if (apply_filters("wpdiscuz_enable_user_mentioning", true) && !empty($args["is_wpdiscuz_comment"]) && ($users = $this->getMentionedUsers($content))) {
+        if (apply_filters("wpdiscuz_enable_user_mentioning", true) && !empty($args["is_wpdiscuz_comment"]) && ($users = $this->getMentionedUsers($content, false))) {
             foreach ($users as $k => $user) {
                 $user_link = "";
                 if (class_exists("BuddyPress")) {
@@ -819,14 +828,19 @@ class WpdiscuzHelper implements WpDiscuzConstants {
         return $content;
     }
 
-    public function getMentionedUsers($content) {
+    public function getMentionedUsers($content, $onlyNick = true) {
         $users = [];
-        if (preg_match_all("/(@[^\s\,\@\.\!\?\#\$\%\:\;\'\"\`\~\)\(\}\{\|\\\[\]]*)/is", $content, $nicenames)) {
-            $nicenames = array_map("strip_tags", $nicenames[0]);
-            $nicenames = array_unique($nicenames);
-            foreach ($nicenames as $k => $nicename) {
-                if ($user = get_user_by("slug", ltrim($nicename, "@"))) {
-                    $users[] = ["replace" => $nicename, "u_id" => $user->ID, "name" => $user->display_name, "email" => $user->user_email];
+        if (preg_match_all("/(@[^\s\,\@\.\!\?\#\$\%\:\;\'\"\`\~\)\(\}\{\|\\\[\]]*)/is", $content, $nicknames)) {
+            $nicknames = array_map("strip_tags", $nicknames[0]);
+            $nicknames = array_unique($nicknames);
+            foreach ($nicknames as $k => $nickname) {
+                if ($onlyNick) {
+					$user = $this->dbManager->getUserByNickname(ltrim($nickname, "@"));
+                } else {
+					$user = $this->dbManager->getUserByNicknameOrNicename(ltrim($nickname, "@"));
+                }
+                if ($user) {
+                    $users[] = ["replace" => $nickname, "u_id" => $user->ID, "name" => $user->display_name, "email" => $user->user_email];
                 }
             }
         }
@@ -955,19 +969,19 @@ class WpdiscuzHelper implements WpDiscuzConstants {
             if ($this->options->moderation["commentRestrictionType"] === "both") {
                 $count = get_comments($args);
                 if ($count >= $this->options->moderation["userCommentsLimit"]) {
-                    wp_die(esc_html(sprintf($this->options->phrases["wc_not_allowed_to_comment_more_than"], $count)));
+                    wp_die(esc_html(sprintf($this->options->getPhrase("wc_not_allowed_to_comment_more_than"), $count)));
                 }
             } else if ($this->options->moderation["commentRestrictionType"] === "parent" && !$comment_parent) {
                 $args["parent"] = 0;
                 $count = get_comments($args);
                 if ($count >= $this->options->moderation["userCommentsLimit"]) {
-                    wp_die(esc_html(sprintf($this->options->phrases["wc_not_allowed_to_create_comment_thread_more_than"], $count)));
+                    wp_die(esc_html(sprintf($this->options->getPhrase("wc_not_allowed_to_create_comment_thread_more_than"), $count)));
                 }
             } else if ($this->options->moderation["commentRestrictionType"] === "reply" && $comment_parent) {
                 $args["parent__not_in"] = [0];
                 $count = get_comments($args);
                 if ($count >= $this->options->moderation["userCommentsLimit"]) {
-                    wp_die(esc_html(sprintf($this->options->phrases["wc_not_allowed_to_reply_more_than"], $count)));
+                    wp_die(esc_html(sprintf($this->options->getPhrase("wc_not_allowed_to_reply_more_than"), $count)));
                 }
             }
         }

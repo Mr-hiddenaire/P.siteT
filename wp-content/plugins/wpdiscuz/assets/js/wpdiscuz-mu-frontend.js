@@ -18,15 +18,16 @@ jQuery(document).ready(function ($) {
         data.append('action', 'wmuUploadFiles');
         data.append('wmu_nonce', wpdiscuzAjaxObj.wmuSecurity);
         data.append('wmuAttachmentsData', $('.wmu-attachments-data', form).val());
+        data.append('uniqueId', form.find('.wpdiscuz_unique_id').val());
         var size = 0;
         $.each(files, function (i, file) {
             size += file.size;
             data.append(wpdiscuzAjaxObj.wmuInput + '[' + i + ']', file);
         });
         if (size > parseInt(wpdiscuzAjaxObj.wmuMaxFileSize)) {
-            wpdiscuzAjaxObj.setCommentMessage(wpdiscuzAjaxObj.wmuPhraseMaxFileSize, 'error', 3000);
+            wpdiscuzAjaxObj.setCommentMessage(wpdiscuzAjaxObj.applyFilterOnPhrase(wpdiscuzAjaxObj.wmuPhraseMaxFileSize, 'wmuPhraseMaxFileSize', btn), 'error', 3000);
         } else if (size > parseInt(wpdiscuzAjaxObj.wmuPostMaxSize)) {
-            wpdiscuzAjaxObj.setCommentMessage(wpdiscuzAjaxObj.wmuPhrasePostMaxSize, 'error', 3000);
+            wpdiscuzAjaxObj.setCommentMessage(wpdiscuzAjaxObj.applyFilterOnPhrase(wpdiscuzAjaxObj.wmuPhrasePostMaxSize, 'wmuPhrasePostMaxSize', btn), 'error', 3000);
         } else {
             wpdiscuzAjaxObj.getAjaxObj(true, true, data)
                     .done(function (r) {
@@ -34,7 +35,7 @@ jQuery(document).ready(function ($) {
                             $('.wmu-attached-data-info', form).remove();
                             $('.wmu-add-files', form).after(r.data.attachmentsHtml);
                             if (r.data.tooltip) {
-                                $('.wmu-upload-wrap').attr('wpd-tooltip', r.data.tooltip);
+                                $('.wmu-upload-wrap', form).attr('wpd-tooltip', r.data.tooltip);
                             }
                             wmuDisplayPreviews(form, r);
                             if (r.data.errors) {
@@ -43,7 +44,7 @@ jQuery(document).ready(function ($) {
                             }
                         } else {
                             if (r.data.errorCode) {
-                                wpdiscuzAjaxObj.setCommentMessage(wpdiscuzAjaxObj[r.data.errorCode], 'error', 3000);
+                                wpdiscuzAjaxObj.setCommentMessage(wpdiscuzAjaxObj.applyFilterOnPhrase(wpdiscuzAjaxObj[r.data.errorCode], r.data.errorCode, form), 'error', 3000);
                             } else if (r.data.error) {
                                 wpdiscuzAjaxObj.setCommentMessage(r.data.error, 'error', 3000);
                             }
@@ -109,7 +110,7 @@ jQuery(document).ready(function ($) {
                             }
                         } else {
                             if (r.data.errorCode) {
-                                wpdiscuzAjaxObj.setCommentMessage(wpdiscuzAjaxObj[r.data.errorCode], 'error', 3000);
+                                wpdiscuzAjaxObj.setCommentMessage(wpdiscuzAjaxObj.applyFilterOnPhrase(wpdiscuzAjaxObj[r.data.errorCode], r.data.errorCode, parent), 'error', 3000);
                             } else if (r.data.error) {
                                 wpdiscuzAjaxObj.setCommentMessage(r.data.error, 'error', 3000);
                             }
@@ -138,6 +139,7 @@ jQuery(document).ready(function ($) {
         data.append('attachmentId', id);
         data.append('wmu_nonce', wpdiscuzAjaxObj.wmuSecurity);
         data.append('wmuAttachmentsData', $('.wmu-attachments-data', form).val());
+        data.append('uniqueId', form.find('.wpdiscuz_unique_id').val());
         wpdiscuzAjaxObj.getAjaxObj(true, true, data)
                 .done(function (r) {
                     if (r.success) {
@@ -153,11 +155,11 @@ jQuery(document).ready(function ($) {
                         $('.wmu-attached-data-info', form).remove();
                         $('.wmu-add-files', form).after(r.data.attachmentsHtml);
                         if (r.data.tooltip) {
-                            $('.wmu-upload-wrap').attr('wpd-tooltip', r.data.tooltip);
+                            $('.wmu-upload-wrap', form).attr('wpd-tooltip', r.data.tooltip);
                         }
                     } else {
                         if (r.data.errorCode) {
-                            wpdiscuzAjaxObj.setCommentMessage(wpdiscuzAjaxObj[r.data.errorCode], 'error', 3000);
+                            wpdiscuzAjaxObj.setCommentMessage(wpdiscuzAjaxObj.applyFilterOnPhrase(wpdiscuzAjaxObj[r.data.errorCode], r.data.errorCode, form), 'error', 3000);
                         } else if (r.data.error) {
                             wpdiscuzAjaxObj.setCommentMessage(r.data.error, 'error', 3000);
                         }

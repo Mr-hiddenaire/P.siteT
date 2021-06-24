@@ -92,11 +92,11 @@ jQuery(document).ready(function ($) {
         var id = parseInt(btn.data('wpd-content-id'));
         if (!isNaN(id)) {
             var action = btn.data('wpd-delete-action');
-            if (action === 'wpdDeleteComment' && !confirm(wpdiscuzUCObj.msgConfirmDeleteComment)) {
+            if (action === 'wpdDeleteComment' && !confirm(wpdiscuzAjaxObj.applyFilterOnPhrase(wpdiscuzUCObj.msgConfirmDeleteComment, 'wc_confirm_comment_delete', btn))) {
                 return false;
-            } else if (action === 'wpdCancelSubscription' && !confirm(wpdiscuzUCObj.msgConfirmCancelSubscription)) {
+            } else if (action === 'wpdCancelSubscription' && !confirm(wpdiscuzAjaxObj.applyFilterOnPhrase(wpdiscuzUCObj.msgConfirmCancelSubscription, 'wc_confirm_cancel_subscription', btn))) {
                 return false;
-            } else if (action === 'wpdCancelFollow' && !confirm(wpdiscuzUCObj.msgConfirmCancelFollow)) {
+            } else if (action === 'wpdCancelFollow' && !confirm(wpdiscuzAjaxObj.applyFilterOnPhrase(wpdiscuzUCObj.msgConfirmCancelFollow, 'wc_confirm_cancel_follow', btn))) {
                 return false;
             }
             var icon = $('i', btn);

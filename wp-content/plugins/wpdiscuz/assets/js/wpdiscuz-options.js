@@ -491,12 +491,13 @@ jQuery(document).ready(function ($) {
     $(document).on('click', '#wpd-disable-addons', function () {
         location.href = $('#wpd-disable-addons-action').val();
     });
-    window.onbeforeunload = confirmExit;
-    function confirmExit() {
+    window.addEventListener('beforeunload', function (e) {
         if (doingAjax) {
+            e.preventDefault();
+            e.returnValue = '';
             return "You have attempted to leave this page while background task is running. Are you sure?";
         }
-    }
+    });
 
     $(".wmu-lightbox").colorbox({
         maxHeight: "95%",
