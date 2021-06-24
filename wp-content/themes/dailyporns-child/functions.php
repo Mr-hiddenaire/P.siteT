@@ -71,12 +71,16 @@ function setAWSCookie()
     
     $signCookie = json_decode($signCookie, true);
     
+    if (!$signCookie) {
+        $signCookie = [];
+    }
+    
     foreach ($signCookie as $signCookieKey => $signCookieVal) {
         $urlparts = parse_url(site_url());
         $domain = $urlparts['host'];
         
         if (!isset($_COOKIE[$signCookieKey]) || !$_COOKIE[$signCookieKey]) {
-            setcookie($signCookieKey, $signCookieVal, time() + 3600*3*24, '/');
+            setcookie($signCookieKey, $signCookieVal, time() + 3600*3*24, '/', $domain, false, true);
         }
     }
 }
