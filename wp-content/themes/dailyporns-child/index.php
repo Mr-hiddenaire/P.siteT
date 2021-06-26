@@ -70,8 +70,7 @@
                <?php if ( is_search() ) : ?>
                   <div class="large-7 medium-10 columns">
                     <div class="archive-search">
-                      <h5><?php _e( 'Nothing matched your search criteria. Please try searching again:', 'richflicks' ); ?></h5>
-                      <?php get_search_form(); ?>
+                      <h5><?php _e( 'Nothing matched your search criteria. Please try searching again', 'richflicks' ); ?></h5>
                     </div>      
                   </div>
                 <?php elseif (is_404() ) : ?>

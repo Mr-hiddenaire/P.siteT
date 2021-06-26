@@ -1,5 +1,11 @@
 <?php
 
+function do_comment_sanitized($comment_content) {
+    $comment_sanitized = preg_replace('/[^0-9a-zA-Z\.]/', '', $comment_content);
+    
+    return $comment_sanitized;
+}
+
 function gt_get_post_view()
 {
     $count = get_post_meta( get_the_ID(), 'post_views_count', true );
@@ -56,11 +62,12 @@ function gt_posts_custom_column_views( $column )
 
 function dailyporns_child_scripts()
 {
-    wp_enqueue_style( 'dailyporns-child-mainstyle', get_stylesheet_directory_uri().'/style.css');
+    wp_enqueue_style('dailyporns-child-mainstyle', get_stylesheet_directory_uri().'/style.css');
+    wp_enqueue_style('dailyporns-child-video-js-css', get_stylesheet_directory_uri().'/video-js.7.10.2.min.css');
     
-    wp_enqueue_script( 'dailyporns-child-mainjs', get_stylesheet_directory_uri().'/assets/js/app.js', [], true);
-    
-    wp_enqueue_script( 'dailyporns-child-jquery-mobile-customize-js', get_stylesheet_directory_uri().'/assets/js/jquery.mobile.custom.min.js', [], true);
+    wp_enqueue_script('dailyporns-child-mainjs', get_stylesheet_directory_uri().'/assets/js/app.js', [], true);
+    wp_enqueue_script('dailyporns-child-jquery-mobile-customize-js', get_stylesheet_directory_uri().'/assets/js/jquery.mobile.custom.min.js', [], true);
+    wp_enqueue_script('dailyporns-child-video-js', get_stylesheet_directory_uri().'/assets/js/video.7.10.2.min.js', [], true);
 }
 
 function setAWSCookie()
@@ -85,8 +92,9 @@ function setAWSCookie()
     }
 }
 
-add_action( 'wp_enqueue_scripts', 'dailyporns_child_scripts', 11);
-add_filter( 'manage_posts_columns', 'gt_posts_column_views' );
-add_action( 'manage_posts_custom_column', 'gt_posts_custom_column_views' );
+add_action('wp_enqueue_scripts', 'dailyporns_child_scripts', 11);
+add_filter('manage_posts_columns', 'gt_posts_column_views');
+add_action('manage_posts_custom_column', 'gt_posts_custom_column_views');
 add_action('init', 'setAWSCookie');
+add_action('pre_comment_content', 'do_comment_sanitized');
 ?>

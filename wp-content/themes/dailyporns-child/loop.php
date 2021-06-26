@@ -6,7 +6,7 @@
 						<div class="postlistthumbwrap">
 							<?php the_post_thumbnail( 'post-thumbnail' );?>
 							<div class="viewpostdisplay">
-								<video class="vp" data-src="<?php echo get_post_meta($post->ID, 'video-thumbnail', true); ?>"></video>
+								<video class="vp" data-src="<?php echo get_post_meta($post->ID, 'preview', true); ?>"></video>
 							</div>
 						</div>
 						<div class="duration"><span class="quality"><?php echo get_post_meta($post->ID, 'quality', true);?></span><var class="time"><?php echo get_post_meta($post->ID, 'duration', true);?></var></div>
